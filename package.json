@@ -1,0 +1,33 @@
+{
+  "name": "@architect/arc-plugin-node-prune",
+  "version": "0.0.0",
+  "description": "Architect serverless framework plugin that runs node-prune on functions prior to deployment",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --fix"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "amazon",
+    "serverless",
+    "cloud",
+    "cloud functions",
+    "api gateway",
+    "plugin",
+    "ci",
+    "deployment",
+    "node_modules",
+    "npm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arc-repos/arc-plugin-node-prune.git"
+  },
+  "author": "Ryan Block",
+  "license": "Apache-2.0",
+  "homepage": "https://arc.codes",
+  "devDependencies": {
+    "eslint": "^5.12.1"
+  }
+}
