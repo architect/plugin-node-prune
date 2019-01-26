@@ -1,6 +1,6 @@
 {
   "name": "@architect/arc-plugin-node-prune",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Architect serverless framework plugin that runs node-prune on functions prior to deployment",
   "main": "index.js",
   "scripts": {
