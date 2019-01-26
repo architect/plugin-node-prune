@@ -2,13 +2,13 @@
 
 ---
 
-## [0.0.1] 2019-01-25
+## [0.0.3] 2019-01-25
 
 ### Added
 
 - Hello! Beta of a Node.js-specific Architect plugin based on [`node-prune`](https://github.com/tj/node-prune) that cleans `node_modules` cruft from your Functions during deployment
   - In our internal testing, we've seen on average ~20-30% reduction in both compressed and uncompressed weight when pruning unnecessary files from `node_modules`, and with no human-discernable impact to deploy prep times. Not bad!
-  - `node-prune` doesn't appear to be versioned, so this release uses the latest publicly available stable build as 2019-01-25
+  - Uses `node-prune` 1.0.1 binaries for x64 Linux, Mac, and Windows only (for now)
 
 
 ---
