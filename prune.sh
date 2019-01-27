@@ -12,8 +12,10 @@
 # Prunes common files that are unnecessarily published in npm packages
 # when people don't configure `.npmignore` or package.json's `files`
 
-echo "Before: "$(du -hs .)
-echo "Files: "$(find node_modules/ -type f | wc -l)
+beforeFiles=$(find . node_modules -type f | wc -l)
+echo "BEFORE"
+echo "Total size:   "$(du -hs .)
+echo "Module files: "${beforeFiles}"\n"
 
 # Common unneeded files
 find . -type d -name node_modules -prune -exec find {} -type f \( \
@@ -148,5 +150,9 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
 # -name node-pre-gyp -o \
 # -name gyp -o \
 
-echo "After: "$(du -hs .)
-echo "Files: "$(find node_modules/ -type f | wc -l)
+afterFiles=$(find . node_modules -type f | wc -l)
+count=$((beforeFiles-afterFiles))
+echo "AFTER"
+echo "Total size:   "$(du -hs .)
+echo "Module files: "${afterFiles}"\n"
+echo "Removed:      "${count}" files"
