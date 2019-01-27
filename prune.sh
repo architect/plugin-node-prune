@@ -121,7 +121,10 @@ find . -type d -name node_modules -prune -exec find {} -type f \( \
   -name   "*.vcxproj.filters" -o \
   -name   "*.vcxproj" -o \
   \( -name   '*.ts' -and \! -name '*.d.ts' \) \
-\) -print0 \; | xargs -0 rm -rf
+\) \
+-not -path "*architect/shared*" \
+-not -path "*architect/views*" \
+-print0 \; | xargs -0 rm -rf
 
 # Common unneeded directories
 find . -type d -name node_modules -prune -exec find {} -type d \( \
@@ -143,7 +146,10 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
   -name   test -o \
   -name   tests -o \
   -name   website \
-\) -print0 \; | xargs -0 rm -rf
+\) \
+-not -path "*architect/shared*" \
+-not -path "*architect/views*" \
+-print0 \; | xargs -0 rm -rf
   
 # TODO look into issues with these
 # -name node-gyp -o \
