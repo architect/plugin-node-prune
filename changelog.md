@@ -2,6 +2,18 @@
 
 ---
 
+## [On `bash` branch] 2019-01-27
+
+### Changed
+
+- Removes binary dists in favor of bash-based operations
+  - Massively smaller module payload
+  - Needed to ensure we can ignore files in `@architect/[shared|views]`, which are Architect's shared code paths copied into Functions' `node_modules`
+  - No human-discernible perf impact on normal size projects
+
+
+---
+
 ## [0.0.3] 2019-01-25
 
 ### Added
