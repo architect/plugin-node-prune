@@ -12,7 +12,14 @@
 # Prunes common files that are unnecessarily published in npm packages
 # when people don't configure `.npmignore` or package.json's `files`
 
-beforeFiles=$(find . node_modules -type f | wc -l)
+fileCount (){
+  find . -type d -name node_modules -prune -exec find {} -type f \
+  -not -path "*architect/shared*" \
+  -not -path "*architect/views*" \
+  -not -path "*@begin*" \
+  -not -path "*@smallwins*" \; | wc -l
+}
+beforeFiles=$(fileCount)
 echo "BEFORE"
 echo "Total size:   "$(du -hs .)
 echo "Module files: "${beforeFiles}"\n"
@@ -122,8 +129,10 @@ find . -type d -name node_modules -prune -exec find {} -type f \( \
   -name   "*.vcxproj" -o \
   \( -name   '*.ts' -and \! -name '*.d.ts' \) \
 \) \
--not -path "*architect/shared*" \
--not -path "*architect/views*" \
+-not -path "*@architect/shared*" \
+-not -path "*@architect/views*" \
+-not -path "*@begin*" \
+-not -path "*@smallwins*" \
 -print0 \; | xargs -0 rm -rf
 
 # Common unneeded directories
@@ -147,16 +156,18 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
   -name   tests -o \
   -name   website \
 \) \
--not -path "*architect/shared*" \
--not -path "*architect/views*" \
+-not -path "*@architect/shared*" \
+-not -path "*@architect/views*" \
+-not -path "*@begin*" \
+-not -path "*@smallwins*" \
 -print0 \; | xargs -0 rm -rf
   
-# TODO look into issues with these
+# TODO look into issues I was seeing before removing these
 # -name node-gyp -o \
 # -name node-pre-gyp -o \
 # -name gyp -o \
 
-afterFiles=$(find . node_modules -type f | wc -l)
+afterFiles=$(fileCount)
 count=$((beforeFiles-afterFiles))
 echo "AFTER"
 echo "Total size:   "$(du -hs .)
