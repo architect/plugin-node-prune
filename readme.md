@@ -2,7 +2,14 @@
 
 ## [`@architect/arc-plugin-node-prune`](https://www.npmjs.com/package/@architect/arc-plugin-node-prune)
 
-> Node.js-specific Architect plugin based on [`node-prune`](https://github.com/tj/node-prune) that cleans `node_modules` cruft from your Functions during deployment
+> Node.js-specific Architect plugin based on [`node-prune`](https://github.com/tuananh/node-prune) that cleans `node_modules` cruft from your Functions during deployment
+
+
+## Warning
+
+Pruning your `node_modules` tree(s) has some inherent risks. While we have found it to be stable and reliable, the packages your project uses may provide different results.
+
+For example: while unlikely, a package that includes and makes use of a file with a commonly `.npmignore`d filename may be impacted by this pruner. For a list of files and folders that are pruned, please [review the script](https://github.com/arc-repos/arc-plugin-node-prune/blob/master/prune.sh).
 
 
 ## Installation
@@ -18,7 +25,12 @@ architect/arc-plugin-node-prune
 
 > Note, no `@` in the plugin name!
 
-3. Deploy your project (`npx deploy`) and watch the filesizes drop!
+3. Deploy your project (`npx deploy`) and watch the filesizes drop 📉
+
+
+## Results
+
+In practice, we have seen average filesize and file count reductions of about 25-30% across the board. That's a meaningful number for cloud functions!
 
 
 ## Disabling the plugin
