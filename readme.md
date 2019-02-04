@@ -29,3 +29,11 @@ If for whatever reason you need to disable the plugin, simply comment it out in 
 @plugins
 # architect/arc-plugin-node-prune
 ```
+
+
+## Limitations
+
+- Architect supports shared code by selectively copying `src/shared` and `src/views` into all Functions' `node_modules` dirs by default.
+  - Because this plugin runs just prior to deployment, it must avoid Architect shared code dirs so as not to inadvertently destroy user files.
+  - As such, any modules shared via `src/shared` and `src/views` will not be pruned.
+- This plugin relies on shelling out to a bash script, so ymmv on Windows.

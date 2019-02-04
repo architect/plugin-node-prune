@@ -19,22 +19,6 @@ module.exports = { beforeDeploy }
 
 function beforeDeploy(params) {
   return new Promise((resolve, reject) => {
-    // Setup bin
-    // x64 only for now; it's hacky, I know
-    // TODO work through Arc deploy plugin async issues to enable per-platform binary downloads at runtime
-    let bin
-    if (process.platform.startsWith('linux')) {
-      bin = 'node-prune-linux'
-    }
-    else if (process.platform.startsWith('darwin')) {
-      bin = 'node-prune-darwin'
-    }
-    else if (process.platform.startsWith('win')) {
-      bin = 'node-prune.exe'
-    }
-    else {
-      return reject(`Prune error: unsupported platform`)
-    }
     function run() {
       if (!(running < limit)) {
         setTimeout(run, 500)
@@ -46,9 +30,9 @@ function beforeDeploy(params) {
         pathToCode = pathToCode.startsWith(cwd)
           ? pathToCode
           : path.join(cwd, pathToCode)
-        const cmd = path.join(cwd, 'node_modules', '@architect', 'arc-plugin-node-prune', 'dist', bin)
-        const args = [pathToCode]
-        const options = {cwd, shell:true}
+        const cmd = path.join(cwd, 'node_modules', '@architect', 'arc-plugin-node-prune', 'prune.sh')
+        const args = []
+        const options = {cwd:pathToCode, shell:true}
         const spawn = child(cmd, args, options)
         spawn.on('exit', function exit(code) {
           running -= 1
