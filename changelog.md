@@ -2,7 +2,16 @@
 
 ---
 
-## [On `bash` branch] 2019-01-27
+## [On master] 2020-03-08
+
+### Changed
+
+- Updated dependencies
+- Removed lockfile
+
+---
+
+## [1.0.0 - 1.0.1] 2019-02-03
 
 ### Changed
 
