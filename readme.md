@@ -1,5 +1,7 @@
 [<img src="https://s3-us-west-2.amazonaws.com/arc.codes/architect-logo-500b@2x.png" width=500>](https://www.npmjs.com/package/@architect/architect)
 
+⚠️ *This repository has been archived. For an updated list other examples refer to [arc.codes/examples](https://arc.codes/examples).*
+
 ## [`@architect/arc-plugin-node-prune`](https://www.npmjs.com/package/@architect/arc-plugin-node-prune)
 
 > Node.js-specific Architect plugin based on [`node-prune`](https://github.com/tuananh/node-prune) that cleans `node_modules` cruft from your Functions during deployment
