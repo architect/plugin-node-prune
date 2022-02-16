@@ -1,54 +1,67 @@
-const child = require('child_process').spawn
-const path = require('path')
+let { updater } = require('@architect/utils')
+let { spawnSync: child } = require('child_process')
+let { join } = require('path')
+let { existsSync } = require('fs')
 
 /**
- * Add to your .arc file:
+ * Add to your Architect project manifest file:
  *
  * @plugins
  * architect/plugin-node-prune
  *
- * Receives params:
- * {arc, pathToCode, env[, pluginConfig]}
+ * That's it, zero config!
  */
+async function pruner ({ inventory }) {
+  let { lambdaSrcDirs } = inventory.inv
+  let quiet = process.env.ARC_QUIET
+  let update = updater('Pruner')
 
-// Setup
-let running = 0
-const limit = 10
-
-module.exports = { beforeDeploy }
-
-function beforeDeploy(params) {
-  return new Promise((resolve, reject) => {
-    function run() {
-      if (!(running < limit)) {
-        setTimeout(run, 500)
+  for (let pathToCode of lambdaSrcDirs) {
+    if (existsSync(pathToCode)) {
+      let start = Date.now()
+      let cwd = process.cwd()
+      pathToCode = pathToCode.startsWith(cwd)
+        ? pathToCode
+        : join(cwd, pathToCode)
+      let cmd = join(cwd, 'node_modules', '@architect', 'macro-node-prune', 'prune.sh')
+      let options = { cwd: pathToCode, shell: true }
+      let spawn = child(cmd, [], options)
+      let output = spawn.stdout
+      if (!quiet && output) {
+        // Format response
+        output = output.toString().split('\n')
+        let fmt = size => {
+          if (size >= 1000) return `${size / 1000}MB`
+          return `${size}KB`
+        }
+        let beforeSize = fmt(output[0])
+        let afterSize = fmt(output[1])
+        let beforeFiles = output[2]
+        let afterFiles = output[3]
+        let prunedFiles = beforeFiles - afterFiles
+        let prunedSize = fmt(output[0] - output[1])
+        let pretty = [
+          `Before ... ${beforeSize} in ${beforeFiles} files`,
+          `After .... ${afterSize} in ${afterFiles} files`,
+          `Found .... ${prunedFiles} unnecessary node_modules files`,
+          `Pruned ... ${prunedSize} in ${Date.now() - start}ms`,
+        ]
+        update.status(
+          pathToCode.replace(cwd, ''),
+          ...pretty
+        )
       }
-      else {
-        running += 1
-        const cwd = process.cwd()
-        let {pathToCode} = params
-        pathToCode = pathToCode.startsWith(cwd)
-          ? pathToCode
-          : path.join(cwd, pathToCode)
-        const cmd = path.join(cwd, 'node_modules', '@architect', 'arc-plugin-node-prune', 'prune.sh')
-        const args = []
-        const options = {cwd:pathToCode, shell:true}
-        const spawn = child(cmd, args, options)
-        spawn.on('exit', function exit(code) {
-          running -= 1
-          if (code !== 0) {
-            reject(`Prune error, code: ${code}`)
-          }
-          else {
-            return resolve()
-          }
-        })
-        spawn.on('error', function error(err) {
-          running -= 1
-          reject(err)
-        })
+      if (spawn.status !== 0 || spawn.error) {
+        let error = spawn.error ? spawn.error : ''
+        throw (`Prune error, exited ${spawn.status}`, error)
       }
     }
-    run()
-  })
+  }
+  return
+}
+
+module.exports = {
+  deploy: {
+    start: pruner
+  }
 }

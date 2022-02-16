@@ -13,16 +13,15 @@
 # when people don't configure `.npmignore` or package.json's `files`
 
 fileCount (){
-  find . -type d -name node_modules -prune -exec find {} -type f \
+  find . -type d -prune -exec find {} -type f \
   -not -path "*architect/shared*" \
   -not -path "*architect/views*" \
   -not -path "*@begin*" \
   -not -path "*@smallwins*" \; | wc -l
 }
+
+beforeSize=$(du -hsk . | cut -d$'\t' -f 1)
 beforeFiles=$(fileCount)
-echo "BEFORE"
-echo "Total size:   "$(du -hs .)
-echo "Module files: "${beforeFiles}"\n"
 
 # Common unneeded files
 find . -type d -name node_modules -prune -exec find {} -type f \( \
@@ -137,7 +136,9 @@ find . -type d -name node_modules -prune -exec find {} -type f \( \
 
 # Common unneeded directories
 find . -type d -name node_modules -prune -exec find {} -type d \( \
+  -name   __mocks__ -o \
   -name   __tests__ -o \
+  -name   __test__ -o \
   -name   .circleci -o \
   -name   .github -o \
   -name   .idea -o \
@@ -161,15 +162,16 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
 -not -path "*@begin*" \
 -not -path "*@smallwins*" \
 -print0 \; | xargs -0 rm -rf
-  
+
 # TODO look into issues I was seeing before removing these
 # -name node-gyp -o \
 # -name node-pre-gyp -o \
 # -name gyp -o \
 
+afterSize=$(du -hsk . | cut -d$'\t' -f 1)
 afterFiles=$(fileCount)
-count=$((beforeFiles-afterFiles))
-echo "AFTER"
-echo "Total size:   "$(du -hs .)
-echo "Module files: "${afterFiles}"\n"
-echo "Removed:      "${count}" files"
+
+echo ${beforeSize}
+echo ${afterSize}
+echo ${beforeFiles}
+echo ${afterFiles}

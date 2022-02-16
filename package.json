@@ -1,10 +1,26 @@
 {
-  "name": "@architect/arc-plugin-node-prune",
+  "name": "@architect/plugin-node-prune",
   "version": "1.0.1",
   "description": "Architect serverless framework plugin that runs node-prune on functions prior to deployment",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "test": "npm run lint"
+  },
+  "files": [
+    "index.js",
+    "prune.sh"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/architect/plugin-node-prune.git"
+  },
+  "author": "Ryan Block",
+  "license": "Apache-2.0",
+  "homepage": "https://arc.codes",
+  "devDependencies": {
+    "@architect/eslint-config": "~2.0.1",
+    "eslint": "^8.9.0"
   },
   "keywords": [
     "aws",
@@ -20,14 +36,7 @@
     "node_modules",
     "npm"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/architect-examples/arc-plugin-node-prune.git"
-  },
-  "author": "Ryan Block",
-  "license": "Apache-2.0",
-  "homepage": "https://arc.codes",
-  "devDependencies": {
-    "eslint": "^6.8.0"
+  "eslintConfig": {
+    "extends": "@architect/eslint-config"
   }
 }
