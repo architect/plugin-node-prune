@@ -17,6 +17,7 @@ fileCount (){
   -not -path "*architect/shared*" \
   -not -path "*architect/views*" \
   -not -path "*@begin*" \
+  -not -path "*@beginner-corp*" \
   -not -path "*@smallwins*" \; | wc -l
 }
 
@@ -131,6 +132,7 @@ find . -type d -name node_modules -prune -exec find {} -type f \( \
 -not -path "*@architect/shared*" \
 -not -path "*@architect/views*" \
 -not -path "*@begin*" \
+-not -path "*@beginner-corp*" \
 -not -path "*@smallwins*" \
 -print0 \; | xargs -0 rm -rf
 
@@ -161,6 +163,7 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
 -not -path "*@architect/views*" \
 -not -path "*@begin*" \
 -not -path "*@smallwins*" \
+-not -path "*@beginner-corp*" \
 -print0 \; | xargs -0 rm -rf
 
 # TODO look into issues I was seeing before removing these
