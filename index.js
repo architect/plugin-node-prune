@@ -23,7 +23,7 @@ async function pruner ({ inventory }) {
       pathToCode = pathToCode.startsWith(cwd)
         ? pathToCode
         : join(cwd, pathToCode)
-      let cmd = join(cwd, 'node_modules', '@architect', 'macro-node-prune', 'prune.sh')
+      let cmd = join(cwd, 'node_modules', '@architect', 'plugin-node-prune', 'prune.sh')
       let options = { cwd: pathToCode, shell: true }
       let spawn = child(cmd, [], options)
       let output = spawn.stdout
@@ -53,7 +53,7 @@ async function pruner ({ inventory }) {
       }
       if (spawn.status !== 0 || spawn.error) {
         let error = spawn.error ? spawn.error : ''
-        throw (`Prune error, exited ${spawn.status}`, error)
+        throw Error(`Prune error, exited ${spawn.status}`, error)
       }
     }
   }
