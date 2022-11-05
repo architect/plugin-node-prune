@@ -18,7 +18,8 @@ fileCount (){
   -not -path "*architect/views*" \
   -not -path "*@begin*" \
   -not -path "*@beginner-corp*" \
-  -not -path "*@smallwins*" \; | wc -l
+  -not -path "*@smallwins*" \
+  $ARC_PRUNE_IGNORE_CUSTOM \; | wc -l
 }
 
 beforeSize=$(du -hsk . | cut -d$'\t' -f 1)
@@ -134,6 +135,7 @@ find . -type d -name node_modules -prune -exec find {} -type f \( \
 -not -path "*@begin*" \
 -not -path "*@beginner-corp*" \
 -not -path "*@smallwins*" \
+$ARC_PRUNE_IGNORE_CUSTOM \
 -print0 \; | xargs -0 rm -rf
 
 # Common unneeded directories
@@ -162,8 +164,9 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
 -not -path "*@architect/shared*" \
 -not -path "*@architect/views*" \
 -not -path "*@begin*" \
--not -path "*@smallwins*" \
 -not -path "*@beginner-corp*" \
+-not -path "*@smallwins*" \
+$ARC_PRUNE_IGNORE_CUSTOM \
 -print0 \; | xargs -0 rm -rf
 
 # TODO look into issues I was seeing before removing these
